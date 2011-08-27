@@ -21,8 +21,8 @@
 				,aP='appendChild'
 				;
 		
-			function scLd(name, data){
-				if(name&&_scLdEvs[name])_scLdEvs[name](data,name);
+			function scLd(name,err,data){
+				if(name&&_scLdEvs[name])_scLdEvs[name](err,data);
 			};
 	
 			function getCnt(){
@@ -82,11 +82,11 @@
 				if(con&&con.error)con.error(msg);
 			};
 
-			sc.getContainer = getCnt;
-			sc.include = include;
-			sc.log = log;
-			sc.error = error;
-			sc.scriptLoaded = scLd;
+			sc.getContainer=getCnt;
+			sc.include=include;
+			sc.log=log;
+			sc.error=error;
+			sc.load=scLd;
 		
 			fn(null,sc);
 		}
