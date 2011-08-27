@@ -5,8 +5,6 @@ Inject script and css file into page
 
 Example:
 -------
-* Make file
-
 _index.html_
 
 	
