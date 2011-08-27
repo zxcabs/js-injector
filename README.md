@@ -29,6 +29,8 @@ _index.html_
 		<a href='#' id='test'>test</a>
 	</body>
 	</html>
+	
+
 ___
 _loader.js_
 
@@ -39,6 +41,8 @@ _loader.js_
 			scope.log('foo include callback error: ' + err + '; data: ' + data);
 		});
 	})(window, TSCOPE);
+	
+
 ___
 _foo.js_
 
@@ -47,8 +51,7 @@ _foo.js_
 	
 		scope.load('foo', 'some error', 'some data');
 	})(window, TSCOPE);
-
-
+	
 
 -----
 * Open index.html
