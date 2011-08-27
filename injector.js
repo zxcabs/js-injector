@@ -90,23 +90,43 @@
 			sc.log=log;
 			sc.error=error;
 			sc.load=scLd;
-			sc.v='0.1';
+			sc.v='0.2';
+			sc.href='HREF';
 		
 			fn(null,sc);
 		}
 	};
 	
 	//create inject script
-	//url      - url js file
 	//scope    - scope
 	//return    - script string
-	function make(scope, fn) {
-		var   str = injector.toString()
-			, sc  = scope || 'INJECT'
-			, fn  = fn || 'function(){}'
+	function make(scope, href, cb) {
+		var   str  = injector.toString()
+			, sc
+			, hr
+			, func
 			;
+		switch (arguments.length) {
+			case 1:
+				sc = 'INJECT';
+				hr = window.location.href;
+				func = ('function' == typeof arguments[0])? arguments[0]: function(){};
+				break;
+			case 2:
+				sc = ('string' == typeof arguments[0])? arguments[0].replace(/\s/g, ''): 'INJECT';
+				hr = window.location.href;
+				func = ('function' == typeof arguments[1])? arguments[1]: function(){};
+				break;
+			case 3:
+				sc = ('string' == typeof arguments[0])? arguments[0].replace(/\s/g, ''): 'INJECT';
+				hr = ('string' == typeof arguments[1])? arguments[1].replace(/\s/g, ''): window.location.href;
+				func = ('function' == typeof arguments[2])? arguments[2]: function(){};
+				break;
+			default:
+				fn('Wrong argument');
+		};
 		
-		return  "javascript:(" + str.replace(/SCOPE/g, sc).replace(/\s{2,}/g, '') + ')(window,' + fn.toString() +');';
+		return  "javascript:(" + str.replace(/SCOPE/g, sc).replace(/HREF/g, hr).replace(/\s{2,}/g, '') + ')(window,' + func.toString().replace(/\s{2,}/g, '') +');';
 	};
 	
 	window.makeInject = make;
