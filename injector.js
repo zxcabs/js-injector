@@ -8,7 +8,7 @@
 			;
 
 		if(sc){
-			log('already exists');
+			sc.log('already exists');
 			fn('already exists');
 		}else{
 			sc={};
