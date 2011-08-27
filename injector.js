@@ -22,7 +22,10 @@
 				;
 		
 			function scLd(name,err,data){
-				if(name&&_scLdEvs[name])_scLdEvs[name](err,data);
+				if(name&&_scLdEvs[name]){
+					_scLdEvs[name](err,data);
+					delete _scLdEvs[name];
+				}
 			};
 	
 			function getCnt(){
