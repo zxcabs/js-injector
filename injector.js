@@ -90,6 +90,7 @@
 			sc.log=log;
 			sc.error=error;
 			sc.load=scLd;
+			sc.v='0.1';
 		
 			fn(null,sc);
 		}
