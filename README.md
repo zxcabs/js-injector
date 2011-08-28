@@ -6,7 +6,7 @@ Inject script and css file into page
 Example:
 -------
 * Make file
-___
+
 _index.html_
 
 	
@@ -32,7 +32,7 @@ _index.html_
 	</html>
 	
 
-___
+
 _loader.js_
 
 	
@@ -45,7 +45,7 @@ _loader.js_
 	})(window, TSCOPE);
 	
 
-___
+
 _foo.js_
 
 	
@@ -56,7 +56,6 @@ _foo.js_
 	})(window, TSCOPE);
 	
 
------
 * Open index.html
 * Add test link to browser bookmarks
 * Go to another page(any) and click to bookmark
@@ -66,3 +65,4 @@ _foo.js_
 >* Load loader.js
 >* load foo.js
 >* foo include callback error: some errordata: some data
+
