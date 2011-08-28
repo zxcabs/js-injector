@@ -9,6 +9,7 @@ Example:
 ___
 _index.html_
 
+	
 	<!doctype html>
 	<html>
 	<head>
@@ -34,6 +35,7 @@ _index.html_
 ___
 _loader.js_
 
+	
 	(function (window, scope) {
 		scope.log('Load loader.js');
 	
@@ -46,6 +48,7 @@ _loader.js_
 ___
 _foo.js_
 
+	
 	(function (w, scope) {
 		scope.log('load foo.js');
 	
