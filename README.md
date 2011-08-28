@@ -15,7 +15,7 @@ _index.html_
 		<script type='text/javascript'>
 			window.onload = function () {
 				var a = document.getElementById('test');
-				a.href = makeInject('TSCOPE', function(err,scope){
+				a.href = makeInject('TSCOPE', 'js', function(err,scope){
 						scope.log('inject!: ' + err);
 						if(!err){
 							scope.include('http://yourhost/js/loader.js');
@@ -37,7 +37,7 @@ _loader.js_
 	(function (window, scope) {
 		scope.log('Load loader.js');
 	
-		scope.include('http://yourhost/js/foo.js', function(err, data) {
+		scope.include('http://yourhost/js/foo.js', 'js' function(err, data) {
 			scope.log('foo include callback error: ' + err + '; data: ' + data);
 		});
 	})(window, TSCOPE);
@@ -50,7 +50,7 @@ _foo.js_
 	(function (w, scope) {
 		scope.log('load foo.js');
 	
-		scope.load('foo', 'some error', 'some data');
+		scope.load('foo.js', 'some error', 'some data');
 	})(window, TSCOPE);
 	
 
