@@ -41,21 +41,17 @@
 				return cnt;
 			};
 
-			function include(url,fn){
-				if(!url&&typeof(url)!="string"&&url.match(/\.\w+$/i)){
-					fn('Type');
-				}else{
-					var type=url.match(/\.\w+$/i)[0]
-						,name
-						,el;
+			function include(url, type, fn){
+				var ua = url.split('/')
+					, name = ua[ua.length - 1].replace(/\?.*$/i, '')
+					, el
+					, fn = fn || function(){}
+					;
 
-					switch(type){
-						case '.js':
-							name=(url.match(/[\w\d.-]+$/i))?url.match(/[\w\d.-]+$/i)[0].replace(/\.\w+$/i, ''):'SCOPE'+Math.random();
-							if (fn&&typeof(fn)=='function'){
-								_scLdEvs[name]=fn;
-							};
-	
+					switch (type) {
+						case 'js':
+							_scLdEvs[name]=fn;
+							
 							el=doc[cE]('script');
 							el.type='text/javascript';
 							el.charset='utf8';
@@ -63,7 +59,7 @@
 							el.src=url;
 							getCnt()[aP](el);
 							break;
-						case '.css':
+						case 'css':
 							el=doc[cE]('link');
 							el.type='text/css';
 							el.href=url;
@@ -73,7 +69,6 @@
 						default:
 							fn('Type');
 					};
-				};
 			};
 
 			function log(msg){
