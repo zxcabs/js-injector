@@ -8,7 +8,6 @@
 			;
 
 		if(sc){
-			sc.log('already exists');
 			fn('already exists');
 		}else{
 			sc={};
@@ -77,11 +76,11 @@
 				};
 			};
 
-			function log(msg) {
+			function log(msg){
 				if(con&&con.log)con.log(msg);
 			};
 
-			function error(msg) {
+			function error(msg){
 				if(con&&con.error)con.error(msg);
 			};
 
@@ -90,7 +89,7 @@
 			sc.log=log;
 			sc.error=error;
 			sc.load=scLd;
-			sc.v='0.2';
+			sc.v='0.3';
 			sc.href='HREF';
 		
 			fn(null,sc);
@@ -126,7 +125,27 @@
 				fn('Wrong argument');
 		};
 		
-		return  "javascript:(" + str.replace(/SCOPE/g, sc).replace(/HREF/g, hr).replace(/\s{2,}/g, '') + ')(window,' + func.toString().replace(/\s{2,}/g, '') +');';
+		str  = minJS(str.replace(/SCOPE/g, sc).replace(/HREF/g, hr));
+		func = minJS(func.toString());
+		
+		return  "javascript:(" + str + ')(window,' + func +');';
+	};
+	
+	function minJS(jsStr) {
+		var r = jsStr.replace(/\s{2,}|\r|\n/g, '')
+					 .replace(/,\s+/g, ',')
+					 .replace(/\s{0,}\)\s{0,}/g, ')').replace(/\s{0,}\(\s{0,}/g, '(')
+					 .replace(/\s{0,}{\s{0,}/g,'{').replace(/[\s;]{0,}}\s{0,}/g,'}')
+					 .replace(/\s{0,}=\s{0,}/g, '=').replace(/\s{0,}==\s{0,}/g, '==').replace(/\s{0,}===\s{0,}/g, '===')
+					 .replace(/\s{0,}!\s{0,}/g, '!').replace(/\s{0,}!=\s{0,}/g, '!=').replace(/\s{0,}!==\s{0,}/g, '!==')
+					 .replace(/\s{0,}>\s{0,}/g, '>').replace(/\s{0,}>>\s{0,}/g, '>>').replace(/\s{0,}>=\s{0,}/g, '>=')
+					 .replace(/\s{0,}<\s{0,}/g, '<').replace(/\s{0,}<<\s{0,}/g, '<<').replace(/\s{0,}<=\s{0,}/g, '<=')
+					 .replace(/\s{0,}&\s{0,}/g, '&').replace(/\s{0,}&&\s{0,}/g, '&&')
+					 .replace(/\s{0,}\|\s{0,}/g, '|').replace(/\s{0,}\|\|\s{0,}/g, '||')
+					 .replace(/function\s+/g, 'function ').replace(/var\s+/g, 'var ').replace(/case\s+/g, 'case')
+				;
+		
+		return r;
 	};
 	
 	window.makeInject = make;
