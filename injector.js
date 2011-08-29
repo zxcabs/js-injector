@@ -74,7 +74,7 @@
 						sc.return=undefined;
 					};
 					
-					getCnt()[aP](el);
+					return getCnt()[aP](el);
 			};
 
 			function log(msg){
