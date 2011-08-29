@@ -17,7 +17,6 @@
 				,doc=document
 				,cE='createElement'
 				,aP='appendChild'
-				,rt
 				;
 		
 	
@@ -61,19 +60,19 @@
 					};
 					
 					el.onload = function () {
-						fn(null,rt);
-						rt=undefined;
-					}
+						fn(null,sc.return);
+						sc.return=undefined;
+					};
 					
 					el.onabort = function () {
 						fn('Abort');
-						rt=undefined;
-					}
+						sc.return=undefined;
+					};
 					
 					el.onerror = function () {
 						fn('Load error');
-						rt=undefined;
-					}
+						sc.return=undefined;
+					};
 					
 					getCnt()[aP](el);
 			};
@@ -90,7 +89,7 @@
 			sc.include=include;
 			sc.log=log;
 			sc.error=error;
-			sc.return=rt;
+			sc.return=undefined;
 			sc.v='0.4';
 			sc.href='HREF';
 		
@@ -144,7 +143,7 @@
 					 .replace(/\s{0,}<\s{0,}/g, '<').replace(/\s{0,}<<\s{0,}/g, '<<').replace(/\s{0,}<=\s{0,}/g, '<=')
 					 .replace(/\s{0,}&\s{0,}/g, '&').replace(/\s{0,}&&\s{0,}/g, '&&')
 					 .replace(/\s{0,}\|\s{0,}/g, '|').replace(/\s{0,}\|\|\s{0,}/g, '||')
-					 .replace(/function\s+/g, 'function ').replace(/var\s+/g, 'var ').replace(/case\s+/g, 'case')
+					 .replace(/function\s+/g, 'function ').replace(/var\s+/g, 'var ').replace(/case\s+/g, 'case ')
 				;
 		
 		return r;
