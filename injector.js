@@ -14,18 +14,12 @@
 			w['SCOPE']=sc;
 
 			var cnt=null
-				,_scLdEvs={}
 				,doc=document
 				,cE='createElement'
 				,aP='appendChild'
+				,rt
 				;
 		
-			function scLd(name,err,data){
-				if(name&&_scLdEvs[name]){
-					_scLdEvs[name](err,data);
-					delete _scLdEvs[name];
-				}
-			};
 	
 			function getCnt(){
 				if (!cnt) {
@@ -50,25 +44,38 @@
 
 					switch (type) {
 						case 'js':
-							_scLdEvs[name]=fn;
-							
 							el=doc[cE]('script');
 							el.type='text/javascript';
 							el.charset='utf8';
 							el.id=name;
 							el.src=url;
-							getCnt()[aP](el);
 							break;
 						case 'css':
 							el=doc[cE]('link');
 							el.type='text/css';
 							el.href=url;
 							el.rel='stylesheet';
-							getCnt()[aP](el);
 							break;
 						default:
-							fn('Type');
+							return fn('Type');
 					};
+					
+					el.onload = function () {
+						fn(null,rt);
+						rt=undefined;
+					}
+					
+					el.onabort = function () {
+						fn('Abort');
+						rt=undefined;
+					}
+					
+					el.onerror = function () {
+						fn('Load error');
+						rt=undefined;
+					}
+					
+					getCnt()[aP](el);
 			};
 
 			function log(msg){
@@ -83,8 +90,8 @@
 			sc.include=include;
 			sc.log=log;
 			sc.error=error;
-			sc.load=scLd;
-			sc.v='0.3';
+			sc.return=rt;
+			sc.v='0.4';
 			sc.href='HREF';
 		
 			fn(null,sc);

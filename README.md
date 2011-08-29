@@ -15,10 +15,10 @@ _index.html_
 		<script type='text/javascript'>
 			window.onload = function () {
 				var a = document.getElementById('test');
-				a.href = makeInject('TSCOPE', 'js', function(err,scope){
+				a.href = makeInject('TSCOPE', function(err,scope){
 						scope.log('inject!: ' + err);
 						if(!err){
-							scope.include('http://yourhost/js/loader.js');
+							scope.include('http://yourhost/js/loader.js', 'js');
 						};
 					});
 			};
@@ -50,7 +50,7 @@ _foo.js_
 	(function (w, scope) {
 		scope.log('load foo.js');
 	
-		scope.load('foo.js', 'some error', 'some data');
+		scope.return = 'some data';
 	})(window, TSCOPE);
 	
 
@@ -62,5 +62,5 @@ _foo.js_
 >* inject!: null
 >* Load loader.js
 >* load foo.js
->* foo include callback error: some errordata: some data
+>* foo include callback error: null, data: some data
 
