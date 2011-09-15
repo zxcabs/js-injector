@@ -18,7 +18,7 @@ _index.html_
 				a.href = makeInject('TSCOPE', function(err,scope){
 						scope.log('inject!: ' + err);
 						if(!err){
-							scope.include('http://yourhost/js/loader.js', 'js');
+							scope.include(scope.href + 'js/loader.js', 'js');
 						};
 					});
 			};
@@ -37,7 +37,7 @@ _loader.js_
 	(function (window, scope) {
 		scope.log('Load loader.js');
 	
-		scope.include('http://yourhost/js/foo.js', 'js' function(err, data) {
+		scope.include(scope.href + 'js/foo.js', 'js' function(err, data) {
 			scope.log('foo include callback error: ' + err + '; data: ' + data);
 		});
 	})(window, TSCOPE);
