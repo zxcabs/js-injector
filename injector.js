@@ -61,6 +61,19 @@
 				return ld(el, url, fn);
 			};
 			
+			function iHTML(url, fn) {
+				var fn = fn || function(){}
+					, el = doc[cE]('object')
+					; 
+					el.data = mU(url);
+					
+					function ol (err) {
+						fn(err);
+					};
+					
+					return ld(el, url, ol);
+			};
+			
 			function ld(el, u, cb) {
 				var ua = u.split('/')
 					, n = ua[ua.length - 1]
@@ -83,8 +96,9 @@
 			sc.getContainer = getCnt;
 			sc.includeJS = iJS;
 			sc.includeCSS = iCSS;
+			sc.includeHTML = iHTML;
 			sc.exports = undefined;
-			sc.v = '0.5';
+			sc.v = '0.6';
 			sc.href = 'HREF';
 			sc._load = ld;
 		
@@ -122,6 +136,8 @@
 			default:
 				fn('Wrong argument');
 		};
+		
+		hr = hr.replace(/\/$/, '');
 		
 		str  = minJS(str.replace(/SCOPE/g, sc).replace(/HREF/g, hr));
 		func = minJS(func.toString());
