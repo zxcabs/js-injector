@@ -1,106 +1,103 @@
 //injector
 (function (window) {
 	
-	var injector = function(w, fn){
-		var sc=w['SCOPE']
-			,fn=fn||function(){}
-			,con=console	
+	var injector = function(g, fn){
+		var sc=g['SCOPE']
+			, fn=fn||function(){}
+			, cnt
+			, doc = document
+			, cE = 'createElement'
+			, aP = 'appendChild'
 			;
 
 		if(sc){
 			fn('already exists');
 		}else{
-			sc={};
-			w['SCOPE']=sc;
+			g['SCOPE'] = sc = {};
 
-			var cnt=null
-				,doc=document
-				,cE='createElement'
-				,aP='appendChild'
-				;
-		
-	
-			function getCnt(){
+			function getCnt() {
 				if (!cnt) {
-					cnt=doc.getElementById('SCOPE');
+					cnt = doc.getElementById('SCOPE');
 
 					if(!cnt){
-						cnt=doc[cE]('div');
-						cnt.id='SCOPE';
+						cnt = doc[cE]('div');
+						cnt.id = 'SCOPE';
 						doc.body[aP](cnt);
 					};
 				};
 
 				return cnt;
 			};
-
-			function include(url, type, fn){
-				var ua = url.split('/')
-					, name = ua[ua.length - 1].replace(/\?.*$/i, '')
-					, el
-					, fn = fn || function(){}
+			
+			function mU (u) {
+				return ((u.match(/^\//))? sc.href + u: u);
+			};
+			
+			function iJS(url, fn){
+				var fn = fn || function(){}
+					, el = doc[cE]('script')
+					; 
+					
+					el.type = 'text/javascript';
+					el.src = mU(url);
+					
+					function ol (err) {
+						fn(err, sc.exports);
+						sc.exports = undefined;
+					};
+					
+					return ld(el, url, ol);
+			};
+			
+			function iCSS(url, fn) {
+				var fn = fn || function(){}
+					, el = doc[cE]('link')
+					; 
+					
+					el.type = 'text/css';
+					el.rel = 'stylesheet';
+					el.href = mU(url);
+				
+				return ld(el, url, fn);
+			};
+			
+			function ld(el, u, cb) {
+				var ua = u.split('/')
+					, n = ua[ua.length - 1]
 					;
-
-					switch (type) {
-						case 'js':
-							el=doc[cE]('script');
-							el.type='text/javascript';
-							el.charset='utf8';
-							el.id=name;
-							el.src=url;
-							break;
-						case 'css':
-							el=doc[cE]('link');
-							el.type='text/css';
-							el.href=url;
-							el.rel='stylesheet';
-							break;
-						default:
-							return fn('Type');
+				
+				el.id = n;
+				
+				function on (err) {
+					return function () {
+						cb(err);
 					};
-					
-					el.onload = function () {
-						fn(null,sc.return);
-						sc.return=undefined;
-					};
-					
-					el.onabort = function () {
-						fn('Abort');
-						sc.return=undefined;
-					};
-					
-					el.onerror = function () {
-						fn('Load error');
-						sc.return=undefined;
-					};
-					
-					return getCnt()[aP](el);
+				}
+				
+				el.onload = on();
+				el.onabort = on('Abort');
+				el.onerror = on('Load error');
+				return getCnt()[aP](el);
 			};
-
-			function log(msg){
-				if(con&&con.log)con.log(msg);
-			};
-
-			function error(msg){
-				if(con&&con.error)con.error(msg);
-			};
-
-			sc.getContainer=getCnt;
-			sc.include=include;
-			sc.log=log;
-			sc.error=error;
-			sc.return=undefined;
-			sc.v='0.4';
-			sc.href='HREF';
+			
+			sc.getContainer = getCnt;
+			sc.includeJS = iJS;
+			sc.includeCSS = iCSS;
+			sc.exports = undefined;
+			sc.v = '0.5';
+			sc.href = 'HREF';
+			sc._load = ld;
 		
-			fn(null,sc);
-		}
+			fn(null, sc);
+		};
 	};
 	
-	//create inject script
-	//scope    - scope
-	//return    - script string
-	function make(scope, href, cb) {
+	/*
+	 * Make injection script
+	 * make([scope,] [href,] callback);
+	 * callback(error, scope);
+	 */
+	function make(cb) {
 		var   str  = injector.toString()
 			, sc
 			, hr
@@ -129,7 +126,7 @@
 		str  = minJS(str.replace(/SCOPE/g, sc).replace(/HREF/g, hr));
 		func = minJS(func.toString());
 		
-		return  "javascript:(" + str + ')(window,' + func +');';
+		return  "javascript:(" + str + '(this,' + func +'));';
 	};
 	
 	function minJS(jsStr) {

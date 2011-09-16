@@ -16,9 +16,9 @@ _index.html_
 			window.onload = function () {
 				var a = document.getElementById('test');
 				a.href = makeInject('TSCOPE', function(err,scope){
-						scope.log('inject!: ' + err);
+						console.log('inject!: ' + err);
 						if(!err){
-							scope.include(scope.href + 'js/loader.js', 'js');
+							scope.includeJS('/js/loader.js');
 						};
 					});
 			};
@@ -35,10 +35,10 @@ _loader.js_
 
 	
 	(function (window, scope) {
-		scope.log('Load loader.js');
+		console.log('Load loader.js');
 	
-		scope.include(scope.href + 'js/foo.js', 'js' function(err, data) {
-			scope.log('foo include callback error: ' + err + '; data: ' + data);
+		scope.includeJS('/js/foo.js', function(err, data) {
+			console.log('foo include callback error: ' + err + '; data: ' + data);
 		});
 	})(window, TSCOPE);
 	
@@ -48,10 +48,23 @@ _foo.js_
 
 	
 	(function (w, scope) {
-		scope.log('load foo.js');
-	
-		scope.return = 'some data';
+		console.log('load foo.js');
+		
+		scope.includeCSS('/css/bar.css', function(err) {
+			console.log('include bar.css');
+		});
+		
+		scope.exports = 'some data';
 	})(window, TSCOPE);
+	
+	
+
+_bar.css_
+
+	
+	body {
+		background: red;
+	}
 	
 
 * Open index.html
@@ -63,4 +76,4 @@ _foo.js_
 >* Load loader.js
 >* load foo.js
 >* foo include callback error: null, data: some data
-
+>* include bar.css (Only IE and Opera)
