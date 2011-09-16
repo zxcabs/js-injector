@@ -61,17 +61,14 @@
 				return ld(el, url, fn);
 			};
 			
-			function iHTML(url, fn) {
+			function iHTML(tg, url, fn) {
 				var fn = fn || function(){}
 					, el = doc[cE]('object')
 					; 
 					el.data = mU(url);
 					
-					function ol (err) {
-						fn(err);
-					};
-					
-					return ld(el, url, ol);
+
+					return tg[aP](el);
 			};
 			
 			function ld(el, u, cb) {
