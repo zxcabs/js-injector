@@ -54,6 +54,8 @@ _foo.js_
 			console.log('include bar.css');
 		});
 		
+		scope.includeHTML(document.body, '/baz.html');
+		
 		scope.exports = 'some data';
 	})(window, TSCOPE);
 	
@@ -77,3 +79,5 @@ _bar.css_
 >* load foo.js
 >* foo include callback error: null, data: some data
 >* include bar.css (Only IE and Opera)
+
+callback on html load not supported;
